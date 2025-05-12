@@ -1,10 +1,66 @@
 .column {
   background: #ebecf0;
-  border-radius: 3px;
+  border-radius: 8px;
   min-width: 300px;
-  padding: 8px;
+  max-width: 300px;
+  padding: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.column h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #172b4d;
+  margin: 0;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 3px;
+}
+
+.column h2:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .ticket-list {
   min-height: 100px;
+  padding: 4px;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  color: #6b778c;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 3px;
+}
+
+.delete-button:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: #de350b;
+}
+
+.add-ticket {
+  width: 100%;
+  padding: 8px;
+  background: none;
+  border: none;
+  color: #5e6c84;
+  cursor: pointer;
+  margin-top: 8px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+.add-ticket:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: #172b4d;
 }
