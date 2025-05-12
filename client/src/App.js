@@ -1,52 +1,95 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
-import Column from './components/Column.jsx';
+import Column from './components/Column';
 import './App.css';
 
 function App() {
-  const [columns, setColumns] = useState({
-    'todo': {
-      id: 'todo',
-      title: 'To Do',
-      tickets: [
-        { id: 'task-1', content: 'Create login page' },
-        { id: 'task-2', content: 'Design database schema' }
-      ]
-    },
-    'inDevelopment': {
-      id: 'inDevelopment',
-      title: 'In Development',
-      tickets: [
-        { id: 'task-3', content: 'Set up CI/CD pipeline' }
-      ]
-    },
-    'inQA': {
-      id: 'inQA',
-      title: 'In QA',
-      tickets: [
-        { id: 'task-4', content: 'Create Repository' }
-      ]
-    },
-    'done': {
-      id: 'done',
-      title: 'Done',
-      tickets: [
-        { id: 'task-5', content: 'Project setup' }
-      ]
+  const [boardName, setBoardName] = useState('My Board');
+  const [isEditingBoard, setIsEditingBoard] = useState(false);
+  const [columns, setColumns] = useState({});
+
+  useEffect(() => {
+    const savedBoard = localStorage.getItem(boardName);
+    if (savedBoard) {
+      setColumns(JSON.parse(savedBoard));
     }
-  });
+  }, [boardName]);
+
+  const saveBoard = (newColumns) => {
+    localStorage.setItem(boardName, JSON.stringify(newColumns));
+    setColumns(newColumns);
+  };
+
+  const addColumn = () => {
+    const newColumnId = `column-${Date.now()}`;
+    const newColumns = {
+      ...columns,
+      [newColumnId]: {
+        id: newColumnId,
+        title: 'New Column',
+        tickets: []
+      }
+    };
+    saveBoard(newColumns);
+  };
+
+  const deleteColumn = (columnId) => {
+    const newColumns = { ...columns };
+    delete newColumns[columnId];
+    saveBoard(newColumns);
+  };
+
+  const addTicket = (columnId) => {
+    const newTicket = {
+      id: `ticket-${Date.now()}`,
+      title: 'New Ticket',
+      description: ''
+    };
+    
+    const newColumns = {
+      ...columns,
+      [columnId]: {
+        ...columns[columnId],
+        tickets: [...columns[columnId].tickets, newTicket]
+      }
+    };
+    saveBoard(newColumns);
+  };
+
+  const updateTicket = (columnId, ticketId, updates) => {
+    const newColumns = {
+      ...columns,
+      [columnId]: {
+        ...columns[columnId],
+        tickets: columns[columnId].tickets.map(ticket => 
+          ticket.id === ticketId ? { ...ticket, ...updates } : ticket
+        )
+      }
+    };
+    saveBoard(newColumns);
+  };
 
   const onDragEnd = (result) => {
     const { source, destination, type } = result;
     if (!destination) return;
 
+    if (type === 'column') {
+      const entries = Object.entries(columns);
+      const [removed] = entries.splice(source.index, 1);
+      entries.splice(destination.index, 0, removed);
+      const reorderedColumns = Object.fromEntries(entries);
+      saveBoard(reorderedColumns);
+      return;
+    }
+
+    // Handle ticket dragging
     if (source.droppableId === destination.droppableId) {
       const column = columns[source.droppableId];
       const newTickets = Array.from(column.tickets);
       const [removed] = newTickets.splice(source.index, 1);
       newTickets.splice(destination.index, 0, removed);
 
-      setColumns({
+      saveBoard({
         ...columns,
         [source.droppableId]: {
           ...column,
@@ -61,7 +104,7 @@ function App() {
       const [removed] = sourceTickets.splice(source.index, 1);
       destTickets.splice(destination.index, 0, removed);
 
-      setColumns({
+      saveBoard({
         ...columns,
         [source.droppableId]: {
           ...sourceColumn,
@@ -77,13 +120,40 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Ticket Tracker</h1>
+      {isEditingBoard ? (
+        <input
+          type="text"
+          value={boardName}
+          onChange={(e) => setBoardName(e.target.value)}
+          onBlur={() => setIsEditingBoard(false)}
+          autoFocus
+        />
+      ) : (
+        <h1 onClick={() => setIsEditingBoard(true)}>{boardName}</h1>
+      )}
+      <button onClick={addColumn}>Add Column</button>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="board">
-          {Object.values(columns).map((column) => (
-            <Column key={column.id} column={column} />
-          ))}
-        </div>
+        <Droppable droppableId="board" direction="horizontal" type="column">
+          {(provided) => (
+            <div 
+              className="board"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {Object.values(columns).map((column, index) => (
+                <Column 
+                  key={column.id}
+                  column={column}
+                  index={index}
+                  onDelete={() => deleteColumn(column.id)}
+                  onAddTicket={() => addTicket(column.id)}
+                  onUpdateTicket={(ticketId, updates) => updateTicket(column.id, ticketId, updates)}
+                />
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
       </DragDropContext>
     </div>
   );
