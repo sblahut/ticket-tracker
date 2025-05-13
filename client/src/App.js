@@ -119,13 +119,14 @@ function App() {
   };
 
   const updateColumnTitle = (columnId, newTitle) => {
-    setColumns(prevColumns => ({
-      ...prevColumns,
-      [columnId]: {
-        ...prevColumns[columnId],
-        title: newTitle
-      }
-    }));
+    const updatedColumns = { 
+      ...columns, 
+      [columnId]: { 
+        ...columns[columnId], 
+        title: newTitle 
+      } 
+    };
+    saveBoard(updatedColumns);  // Persist title change
   };
 
   return (

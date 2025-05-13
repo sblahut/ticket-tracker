@@ -3,12 +3,12 @@ import { Draggable, Droppable } from '@hello-pangea/dnd';
 import Ticket from './Ticket';
 import './Column.css';
 
-const Column = ({ column, index, onDelete, onAddTicket, onUpdateTicket }) => {
+const Column = ({ column, index, onDelete, onAddTicket, onUpdateTicket, onUpdateTitle }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(column.title);
 
   const handleTitleSubmit = () => {
-    onUpdateTicket(column.id, { title });
+    onUpdateTitle(column.id, title);  // Update column title
     setIsEditing(false);
   };
 
