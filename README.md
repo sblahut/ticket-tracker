@@ -88,3 +88,38 @@ uvicorn app.main:app --reload
    - Webhook support
    - Third-party integrations
    - Export/Import functionality
+
+## Testing
+
+### Running Tests
+```bash
+cd client
+npm test
+```
+
+### Test Coverage Report
+```bash
+cd client
+npm test -- --coverage
+```
+
+### Test Suites
+- Component Tests: Verify UI elements and interactions
+- Integration Tests: Validate component relationships
+- Utility Tests: Ensure helper functions work correctly
+
+### Continuous Integration
+Tests run automatically on:
+- Pull requests
+- Main branch commits
+- Release deployments
+
+### Test Structure
+```
+client/src/
+├── __tests__/              # Global test utilities
+├── components/
+│   └── __tests__/         # Component-specific tests
+└── utils/
+    └── __tests__/         # Utility function tests
+```

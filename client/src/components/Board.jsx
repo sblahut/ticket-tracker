@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Droppable } from '@hello-pangea/dnd';
 import Column from './Column.jsx';
 
 const Board = () => {
