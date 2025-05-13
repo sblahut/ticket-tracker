@@ -117,7 +117,7 @@ Tests run automatically on:
 ### Test Structure
 ```
 client/src/
-├── __tests__/              # Global test utilities
+├── __tests__/             # Global test utilities
 ├── components/
 │   └── __tests__/         # Component-specific tests
 └── utils/
