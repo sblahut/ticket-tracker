@@ -1,5 +1,4 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { DragDropContext } from '@hello-pangea/dnd';
 import App from './App';
 
 describe('App Component', () => {

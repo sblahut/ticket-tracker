@@ -17,5 +17,4 @@ async def root():
 
 @app.get("/boards/{board_id}")
 async def get_board(board_id: str):
-    # Implement board retrieval logic
     return {"board_id": board_id, "name": "Sample Board"}

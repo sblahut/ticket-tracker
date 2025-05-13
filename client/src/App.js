@@ -8,6 +8,7 @@ function App() {
   const [isEditingBoard, setIsEditingBoard] = useState(false);
   const [columns, setColumns] = useState({});
 
+  // Load board and columns from localStorage on mount
   useEffect(() => {
     const savedBoard = localStorage.getItem(boardName);
     if (savedBoard) {
@@ -15,11 +16,13 @@ function App() {
     }
   }, [boardName]);
 
+  // Save columns to localStorage
   const saveBoard = (newColumns) => {
     localStorage.setItem(boardName, JSON.stringify(newColumns));
     setColumns(newColumns);
   };
 
+  // Add a new column to the board
   const addColumn = () => {
     const newColumnId = `column-${Date.now()}`;
     const newColumns = {
@@ -33,12 +36,14 @@ function App() {
     saveBoard(newColumns);
   };
 
+  // Delete a column from the board
   const deleteColumn = (columnId) => {
     const newColumns = { ...columns };
     delete newColumns[columnId];
     saveBoard(newColumns);
   };
 
+  // Add a new ticket to a column
   const addTicket = (columnId) => {
     const newTicket = {
       id: `ticket-${Date.now()}`,
@@ -56,6 +61,7 @@ function App() {
     saveBoard(newColumns);
   };
 
+  // Update an existing ticket in a column
   const updateTicket = (columnId, ticketId, updates) => {
     const newColumns = {
       ...columns,
@@ -69,6 +75,7 @@ function App() {
     saveBoard(newColumns);
   };
 
+  // Handle column and ticket drag-and-drop
   const onDragEnd = (result) => {
     const { source, destination, type } = result;
     if (!destination) return;
@@ -82,7 +89,7 @@ function App() {
       return;
     }
 
-    // Handle ticket dragging
+    // Handle ticket dragging within the same column or between columns
     if (source.droppableId === destination.droppableId) {
       const column = columns[source.droppableId];
       const newTickets = Array.from(column.tickets);
@@ -118,6 +125,7 @@ function App() {
     }
   };
 
+  // Update the title of a column
   const updateColumnTitle = (columnId, newTitle) => {
     const updatedColumns = { 
       ...columns, 
@@ -126,7 +134,7 @@ function App() {
         title: newTitle 
       } 
     };
-    saveBoard(updatedColumns);  // Persist title change
+    saveBoard(updatedColumns);
   };
 
   return (
