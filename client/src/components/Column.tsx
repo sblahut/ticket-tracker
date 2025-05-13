@@ -1,15 +1,35 @@
 import React, { useState } from 'react';
 import { Draggable, Droppable } from '@hello-pangea/dnd';
-import Ticket from './Ticket';
+import Ticket from './Ticket.tsx';
 import './Column.css';
 
-const Column = ({ column, index, onDelete, onAddTicket, onUpdateTicket, onUpdateTitle }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(column.title);
+interface TicketData {
+  id: string;
+  title: string;
+  description: string;
+}
 
+interface ColumnProps {
+  column: {
+    id: string;
+    title: string;
+    tickets: TicketData[]; // Array of tickets in the column
+  };
+  index: number; 
+  onDelete: () => void; // Function to delete the column
+  onAddTicket: () => void; // Function to add a new ticket to the column
+  onUpdateTicket: (ticketId: string, updates: { title: string; description: string }) => void; // Function to update a ticket
+  onUpdateTitle: (columnId: string, newTitle: string) => void; // Function to update column title
+}
+
+const Column: React.FC<ColumnProps> = ({ column, index, onDelete, onAddTicket, onUpdateTicket, onUpdateTitle }) => {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>(column.title);
+
+  // Handle the submission of the column title update
   const handleTitleSubmit = () => {
-    onUpdateTitle(column.id, title);  // Update column title
-    setIsEditing(false);
+    onUpdateTitle(column.id, title); // Pass the updated title to the parent
+    setIsEditing(false); // Exit edit mode
   };
 
   return (

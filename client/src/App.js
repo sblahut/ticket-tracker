@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
-import Column from './components/Column';
+import Column from './components/Column.tsx';
 import './App.css';
 
 function App() {

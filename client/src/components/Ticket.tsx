@@ -2,16 +2,28 @@ import React, { useState } from 'react';
 import { Draggable } from '@hello-pangea/dnd';
 import './Ticket.css';
 
-const Ticket = ({ ticket, index, onUpdate }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editData, setEditData] = useState({
+interface TicketProps {
+  ticket: {
+    id: string;
+    title: string;
+    description: string;
+  };
+  index: number; // The index of the ticket within the column
+  onUpdate: (updatedTicket: { title: string; description: string }) => void; // Function to update the ticket's data
+}
+
+const Ticket: React.FC<TicketProps> = ({ ticket, index, onUpdate }) => {
+  // State for handling the edit mode of the ticket
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [editData, setEditData] = useState<{ title: string; description: string }>({
     title: ticket.title,
     description: ticket.description
   });
 
+  // Handle submitting the updated ticket data
   const handleSubmit = () => {
-    onUpdate(editData);
-    setIsEditing(false);
+    onUpdate(editData); // Call the parent update function
+    setIsEditing(false); // Exit edit mode
   };
 
   return (
@@ -48,6 +60,6 @@ const Ticket = ({ ticket, index, onUpdate }) => {
       )}
     </Draggable>
   );
-}
+};
 
 export default Ticket;
