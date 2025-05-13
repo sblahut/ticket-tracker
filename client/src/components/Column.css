@@ -4,7 +4,24 @@
   min-width: 300px;
   max-width: 300px;
   padding: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 3px rgba(9, 30, 66, 0.13);
+}
+
+/* Tablet Breakpoint */
+@media (max-width: 1024px) {
+  .column {
+    min-width: 280px;
+    max-width: 280px;
+  }
+}
+
+/* Mobile Breakpoint */
+@media (max-width: 480px) {
+  .column {
+    min-width: 100%;
+    max-width: 100%;
+    margin-bottom: 12px;
+  }
 }
 
 .column-header {

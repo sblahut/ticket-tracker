@@ -118,6 +118,16 @@ function App() {
     }
   };
 
+  const updateColumnTitle = (columnId, newTitle) => {
+    setColumns(prevColumns => ({
+      ...prevColumns,
+      [columnId]: {
+        ...prevColumns[columnId],
+        title: newTitle
+      }
+    }));
+  };
+
   return (
     <div className="App">
       {isEditingBoard ? (
@@ -148,6 +158,7 @@ function App() {
                   onDelete={() => deleteColumn(column.id)}
                   onAddTicket={() => addTicket(column.id)}
                   onUpdateTicket={(ticketId, updates) => updateTicket(column.id, ticketId, updates)}
+                  onUpdateTitle={updateColumnTitle}
                 />
               ))}
               {provided.placeholder}

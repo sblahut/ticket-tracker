@@ -13,6 +13,31 @@
   padding-bottom: 20px;
 }
 
+/* Tablet Breakpoint */
+@media (max-width: 1024px) {
+  .App {
+    padding: 16px;
+  }
+  
+  .board {
+    gap: 16px;
+    padding-bottom: 16px;
+  }
+}
+
+/* Mobile Breakpoint */
+@media (max-width: 480px) {
+  .App {
+    padding: 12px;
+  }
+  
+  .board {
+    gap: 12px;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 h1 {
   color: #1a1f36;
   font-size: 24px;
